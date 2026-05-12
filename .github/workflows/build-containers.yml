@@ -1,0 +1,155 @@
+name: Build and Publish Docker images
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      # '*/Dockerfile' to match only direct subfolders.
+      - '*/Dockerfile'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '*/Dockerfile'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      folder: ${{ steps.changed-folder.outputs.folder }}
+      base-version: ${{ steps.version.outputs.base-version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Get changed Dockerfile folder
+        id: changed-folder
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            git fetch origin ${{ github.base_ref }}
+            FILES=$(git diff --name-only origin/${{ github.base_ref }} HEAD)
+          else
+            FILES=$(git diff --name-only HEAD^ HEAD)
+          fi
+
+          DOCKERFILE_COUNT=0
+          for file in $FILES; do
+            if [[ "$file" == *"Dockerfile" ]]; then
+              DOCKERFILE_COUNT=$((DOCKERFILE_COUNT + 1))
+            fi
+          done
+
+          # Check for multiple changed Dockerfiles per PR
+          if [[ "$DOCKERFILE_COUNT" -gt 1 ]]; then
+            echo "ERROR: Only one Dockerfile can be changed per PR. Found $DOCKERFILE_COUNT Dockerfiles."
+            exit 1
+          fi
+
+          if [[ "$DOCKERFILE_COUNT" -eq 0 ]]; then
+            echo "folder="
+            exit 0
+          fi
+
+          for file in $FILES; do
+            if [[ "$file" == *"Dockerfile" ]]; then
+              folder=$(dirname "$file")
+              if [ "$folder" != "." ]; then
+                echo "folder=$(basename "$folder")" >> $GITHUB_OUTPUT
+                break
+              else
+                echo "ERROR: Dockerfiles at the repository root are not supported. Place your Dockerfile in a named subfolder."
+                exit 1
+              fi
+            fi
+          done
+
+      - name: Extract version from Dockerfile
+        id: version
+        if: steps.changed-folder.outputs.folder != ''
+        run: |
+          BASE_VERSION=$(grep 'LABEL version=' ./${{ steps.changed-folder.outputs.folder }}/Dockerfile \
+            | sed 's/.*LABEL version="\([^"]*\)".*/\1/')
+          if [ -z "$BASE_VERSION" ]; then
+            echo "ERROR: Could not extract version from LABEL version=\"...\" in Dockerfile. Ensure the label exists and uses double quotes."
+            exit 1
+          fi
+          echo "base-version=${BASE_VERSION}" >> $GITHUB_OUTPUT
+
+  build:
+    runs-on: ubuntu-latest
+    needs: detect
+    if: needs.detect.outputs.folder != ''
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check version does not already exist in GHCR
+        run: |
+          FOLDER="${{ needs.detect.outputs.folder }}"
+          BASE_VERSION="${{ needs.detect.outputs.base-version }}"
+          if docker manifest inspect "ghcr.io/cardio-care/${FOLDER}:${BASE_VERSION}" > /dev/null 2>&1; then
+            echo "ERROR: Version ${BASE_VERSION} already exists. Bump LABEL version= in the Dockerfile."
+            exit 1
+          fi
+
+      - name: Build Docker image
+        run: |
+          FOLDER="${{ needs.detect.outputs.folder }}"
+          BASE_VERSION="${{ needs.detect.outputs.base-version }}"
+          docker build \
+            -t "ghcr.io/cardio-care/${FOLDER}:${BASE_VERSION}" \
+            -t "ghcr.io/cardio-care/${FOLDER}:latest" \
+            "./${FOLDER}"
+
+  push:
+    runs-on: ubuntu-latest
+    needs: [ detect, build ]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && needs.detect.outputs.folder != ''
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check version does not already exist in GHCR
+        run: |
+          FOLDER="${{ needs.detect.outputs.folder }}"
+          BASE_VERSION="${{ needs.detect.outputs.base-version }}"
+          if docker manifest inspect "ghcr.io/cardio-care/${FOLDER}:${BASE_VERSION}" > /dev/null 2>&1; then
+            echo "ERROR: Version ${BASE_VERSION} already exists in GHCR. Two PRs may have passed the version check concurrently. Bump LABEL version= and re-merge."
+            exit 1
+          fi
+
+      - name: Build and push Docker image
+        run: |
+          FOLDER="${{ needs.detect.outputs.folder }}"
+          BASE_VERSION="${{ needs.detect.outputs.base-version }}"
+          docker build \
+            -t "ghcr.io/cardio-care/${FOLDER}:${BASE_VERSION}" \
+            -t "ghcr.io/cardio-care/${FOLDER}:latest" \
+            "./${FOLDER}"
+          docker push "ghcr.io/cardio-care/${FOLDER}:${BASE_VERSION}"
+          docker push "ghcr.io/cardio-care/${FOLDER}:latest"
+

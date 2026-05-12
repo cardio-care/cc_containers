@@ -1,0 +1,59 @@
+name: Warn on unsupported Dockerfile location
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      # Match Dockerfiles in all levels
+      - '**/Dockerfile'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  warn-nested:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Check for nested Dockerfiles
+        id: check
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          FILES=$(git diff --name-only origin/${{ github.base_ref }} HEAD)
+
+          NESTED=""
+          for file in $FILES; do
+            if [[ "$file" == *"Dockerfile" ]]; then
+              depth=$(echo "$file" | tr -cd '/' | wc -c)
+              if [ "$depth" -ge 2 ]; then
+                NESTED="$NESTED\n- \`$file\`"
+              fi
+            fi
+          done
+
+          if [ -n "$NESTED" ]; then
+            echo "nested=true" >> $GITHUB_OUTPUT
+            printf "$NESTED" > /tmp/nested_files.txt
+          else
+            echo "nested=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Post PR comment
+        if: steps.check.outputs.nested == 'true'
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const fs = require('fs');
+            const files = fs.readFileSync('/tmp/nested_files.txt', 'utf8');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## ⚠️ Unsupported Dockerfile location\n\nThe following Dockerfile(s) are nested more than one level deep and will **not** be built or published by the build workflow:\n\n${files}\n\nThe build workflow only supports Dockerfiles directly inside a top-level subfolder, e.g. \`service-a/Dockerfile\`. Please move the Dockerfile up or restructure the folder.`
+            });
+
