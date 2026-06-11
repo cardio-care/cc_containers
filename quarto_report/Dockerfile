@@ -6,13 +6,6 @@ LABEL version="1.0.0"
 # hadolint ignore=DL3059
 RUN install2.r --error pak
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        libcurl4-openssl-dev=8.5.0-2ubuntu10.9 \
-        libssl-dev=3.0.13-0ubuntu3.9 \
-        libxml2-dev=2.9.14+dfsg-1.3ubuntu3.7 \
-        curl=2.9.14+dfsg-1.3ubuntu3.7 \
-    && rm -rf /var/lib/apt/lists/*
-
 # Create non-root user
 RUN touch /etc/passwd /etc/group \
     && groupadd -r bio --gid 1001 \
