@@ -15,7 +15,7 @@ RUN Rscript -e "\
     pak::pkg_install(c( \
         'rjson@0.2.23', \
         'DT@0.33', \
-        'fastmatch@1.1-6', \
+        'fastmatch@1.1-8', \
         'fastqq@0.1.3', \
         'kableExtra@1.4.0', \
         'QCEWAS@1.2-3', \
@@ -24,12 +24,13 @@ RUN Rscript -e "\
         'calibrate@1.7.7', \
         'flextable@0.9.9', \
         'ontologyIndex@2.12', \
-        'manhattanly@0.3.0', \
+        'cran/manhattanly', \
         'bioc::snpStats', \
         'bioc::SeqArray', \
         'bioc::SNPRelate', \
         'kaustubhad/fastman' \
     ))"
+
 
 # Switch to non-root user
 USER bio
