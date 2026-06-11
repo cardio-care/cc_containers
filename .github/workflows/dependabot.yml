@@ -1,0 +1,26 @@
+version: 2
+
+updates:
+  # Base images in each Dockerfile
+  - package-ecosystem: "docker"
+    directories:
+      - "/service-a"
+      - "/service-b"
+      - "/service-c"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "docker"
+
+  # GitHub Actions versions in your workflow
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "github-actions"
