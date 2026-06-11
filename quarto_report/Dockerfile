@@ -3,15 +3,20 @@ FROM rocker/tidyverse:4.6.0
 LABEL version="1.0.0"
 
 # Install system dependencies and create non-root user
+# hadolint ignore=DL3059
 RUN install2.r --error pak
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        libcurl4-openssl-dev \
-        libssl-dev \
-        libxml2-dev \
-        curl
+        libcurl4-openssl-dev=8.20.0-5 \
+        libssl-dev=3.6.2-1 \
+        libxml2-dev=2.15.3+dfsg-1 \
+        curl=8.20.0-5 \
+    && rm -rf /var/lib/apt/lists/*
 
 # Create non-root user
-RUN groupadd -r bio && useradd -r -g bio -m bio
+RUN touch /etc/passwd /etc/group \
+    && groupadd -r bio --gid 1001 \
+    && useradd -r -g bio -m --uid 1001 bio
 
 # Install R dependencies
 RUN Rscript -e "\

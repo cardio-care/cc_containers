@@ -94,7 +94,6 @@ jobs:
         uses: hadolint/hadolint-action@v3.3.0
         with:
           dockerfile: ${{ needs.detect.outputs.folder }}/Dockerfile
-          failure-threshold: warning
 
       - name: Gitleaks detect leaked secrets
         uses: gitleaks/gitleaks-action@v3
