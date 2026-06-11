@@ -7,10 +7,10 @@ LABEL version="1.0.0"
 RUN install2.r --error pak
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        libcurl4-openssl-dev=8.20.0-5 \
-        libssl-dev=3.6.2-1 \
-        libxml2-dev=2.15.3+dfsg-1 \
-        curl=8.20.0-5 \
+        libcurl4-openssl-dev=8.5.0-2ubuntu10.9 \
+        libssl-dev=3.0.13-0ubuntu3.9 \
+        libxml2-dev=2.9.14+dfsg-1.3ubuntu3.7 \
+        curl=2.9.14+dfsg-1.3ubuntu3.7 \
     && rm -rf /var/lib/apt/lists/*
 
 # Create non-root user
