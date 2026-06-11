@@ -3,7 +3,6 @@ FROM rocker/tidyverse:4.6.0
 LABEL version="1.0.0"
 
 # Install system dependencies and create non-root user
-# hadolint ignore=DL3059
 RUN install2.r --error pak
 
 # Create non-root user
@@ -13,7 +12,6 @@ RUN touch /etc/passwd /etc/group \
 
 # Install R dependencies
 RUN Rscript -e "\
-    install.packages('pak', repos='https://cloud.r-project.org'); \
     pak::pkg_install(c( \
         'rjson@0.2.23', \
         'DT@0.33', \
@@ -30,7 +28,7 @@ RUN Rscript -e "\
         'bioc::snpStats', \
         'bioc::SeqArray', \
         'bioc::SNPRelate', \
-        'github::kaustubhad/fastman' \
+        'kaustubhad/fastman' \
     ))"
 
 # Switch to non-root user
