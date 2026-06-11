@@ -91,11 +91,10 @@ jobs:
           fetch-depth: 0
 
       - name: Lint Dockerfile
-        run: |
-          docker run --rm \
-            -v "${{ github.workspace }}/${{ needs.detect.outputs.folder }}/Dockerfile:/Dockerfile" \
-            ghcr.io/hadolint/hadolint:latest \
-            hadolint --failure-threshold warning /Dockerfile
+        uses: hadolint/hadolint-action@v3.3.0
+        with:
+          dockerfile: ${{ needs.detect.outputs.folder }}/Dockerfile
+          failure-threshold: warning
 
       - name: Gitleaks detect leaked secrets
         uses: gitleaks/gitleaks-action@v3
