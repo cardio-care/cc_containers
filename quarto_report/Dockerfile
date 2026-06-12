@@ -24,11 +24,11 @@ RUN Rscript -e "\
         'calibrate@1.7.7', \
         'flextable@0.9.9', \
         'ontologyIndex@2.12', \
-        'cran/manhattanly', \
+        'cran/manhattanly@0.3.0', \
         'bioc::snpStats', \
         'bioc::SeqArray', \
         'bioc::SNPRelate', \
-        'kaustubhad/fastman' \
+        'adhikari-statgen-lab/fastman' \
     ))"
 
 
