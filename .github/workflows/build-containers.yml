@@ -131,16 +131,9 @@ jobs:
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}:${{ needs.detect.outputs.base-version }}
-          format: sarif
-          output: trivy-${{ needs.detect.outputs.folder }}.sarif
-          severity: CRITICAL,HIGH
-
-      - name: Upload Trivy results to Security tab
-        if: steps.trivy.outcome != 'skipped'
-        uses: github/codeql-action/upload-sarif@v4
-        with:
-          sarif_file: trivy-${{ needs.detect.outputs.folder }}.sarif
-          category: trivy-${{ needs.detect.outputs.folder }}
+          severity: HIGH,CRITICAL
+          exit-code: '1'
+          ignore-unfixed: true
 
       - name: Generate SBOM
         uses: anchore/sbom-action@v0
