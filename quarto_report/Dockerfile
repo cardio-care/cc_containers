@@ -4,9 +4,7 @@ LABEL version="1.0.0"
 
 # Install system dependencies and create non-root user
 RUN apt-get update && apt-get upgrade -y \
-    && apt-get purge -y linux-libc-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get clean
 RUN install2.r --error pak
 
 # Create non-root user
@@ -36,6 +34,9 @@ RUN Rscript -e "\
     )); \
     pak::cache_delete()" 
 
+RUN apt-get purge -y linux-libc-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Switch to non-root user
 USER bio
