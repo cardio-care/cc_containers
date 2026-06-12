@@ -90,8 +90,19 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.3.0
+        with:
+          dockerfile: ${{ needs.detect.outputs.folder }}/Dockerfile
+
+      - name: Gitleaks detect leaked secrets
+        uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }} 
+
       - name: Log in to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -115,6 +126,36 @@ jobs:
             -t "ghcr.io/cardio-care/${FOLDER}:latest" \
             "./${FOLDER}"
 
+      - name: Scan image with Trivy
+        id: trivy
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}:${{ needs.detect.outputs.base-version }}
+          format: sarif
+          output: trivy-${{ needs.detect.outputs.folder }}.sarif
+          severity: CRITICAL,HIGH
+
+      - name: Upload Trivy results to Security tab
+        if: steps.trivy.outcome != 'skipped'
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: trivy-${{ needs.detect.outputs.folder }}.sarif
+          category: trivy-${{ needs.detect.outputs.folder }}
+
+      - name: Generate SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          image: ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}:${{ needs.detect.outputs.base-version }}
+          artifact-name: sbom-${{ needs.detect.outputs.folder }}.spdx.json
+          output-file: sbom-${{ needs.detect.outputs.folder }}.spdx.json
+
+      - name: Upload SBOM as artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: sbom-${{ needs.detect.outputs.folder }}
+          path: sbom-${{ needs.detect.outputs.folder }}.spdx.json
+          retention-days: 90
+
   push:
     runs-on: ubuntu-latest
     needs: [ detect, build ]
@@ -126,8 +167,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
+      - name: Download SBOM artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: sbom-${{ needs.detect.outputs.folder }}
+
       - name: Log in to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -143,13 +189,22 @@ jobs:
           fi
 
       - name: Build and push Docker image
-        run: |
-          FOLDER="${{ needs.detect.outputs.folder }}"
-          BASE_VERSION="${{ needs.detect.outputs.base-version }}"
-          docker build \
-            -t "ghcr.io/cardio-care/${FOLDER}:${BASE_VERSION}" \
-            -t "ghcr.io/cardio-care/${FOLDER}:latest" \
-            "./${FOLDER}"
-          docker push "ghcr.io/cardio-care/${FOLDER}:${BASE_VERSION}"
-          docker push "ghcr.io/cardio-care/${FOLDER}:latest"
+        id: build
+        uses: docker/build-push-action@v7
+        with:
+          context: ${{ needs.detect.outputs.folder }}
+          push: true
+          tags: |
+            ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}:${{ needs.detect.outputs.base-version }}
+            ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}:latest
 
+
+      - name: Sign image with Cosign
+        uses: sigstore/cosign-installer@v4.1.0
+
+      - name: Sign and attach SBOM
+        run: |
+          cosign sign --yes \
+            --predicate sbom-${{ needs.detect.outputs.folder }}.spdx.json \
+            --type spdx \
+            ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}:${{ steps.build.outputs.digest  }}
