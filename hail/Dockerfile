@@ -3,7 +3,7 @@ FROM python:3.11-slim-bookworm
 LABEL version="1.1.0"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        openjdk-11-jdk=11.0.31+11-1~deb11u1 \
+        openjdk-17-jdk=17.0.19+10-1~deb12u2 \
         g++=4:12.2.0-3 \
         python3-pip=23.0.1+dfsg-1 \
     && apt-get clean \
