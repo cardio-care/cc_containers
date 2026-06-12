@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         g++=4:12.2.0-3 \
         python3-pip=23.0.1+dfsg-1 \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN python3.11 -m pip install --no-cache-dir hail==0.2.138
 
