@@ -4,7 +4,8 @@ LABEL version="1.0.0"
 
 # Install system dependencies and create non-root user
 RUN apt-get update && apt-get upgrade -y \
-    && apt-get clean
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 RUN install2.r --error pak
 
 # Create non-root user
