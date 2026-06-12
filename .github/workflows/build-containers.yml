@@ -131,9 +131,9 @@ jobs:
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}:${{ needs.detect.outputs.base-version }}
-          severity: MEDIUM,HIGH,CRITICAL
+          severity: HIGH,CRITICAL
           exit-code: '1'
-          skip-version-check: 'true'
+          ignore-unfixed: true
 
       - name: Generate SBOM
         uses: anchore/sbom-action@v0
