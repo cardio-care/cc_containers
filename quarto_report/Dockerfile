@@ -3,6 +3,11 @@ FROM rocker/tidyverse:4.6.0
 LABEL version="1.0.0"
 
 # Install system dependencies and create non-root user
+RUN apt-get update && apt-get upgrade -y \
+    && apt-get purge -y linux-libc-dev \
+    && apt-get autoremove -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 RUN install2.r --error pak
 
 # Create non-root user
