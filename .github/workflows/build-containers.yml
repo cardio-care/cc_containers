@@ -156,6 +156,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -191,13 +192,15 @@ jobs:
             ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}:${{ needs.detect.outputs.base-version }}
             ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}:latest
 
-
       - name: Sign image with Cosign
         uses: sigstore/cosign-installer@v4.1.0
 
       - name: Sign and attach SBOM
         run: |
           cosign sign --yes \
+            ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}@${{ steps.build.outputs.digest }}
+          
+          cosign attest --yes \
             --predicate sbom-${{ needs.detect.outputs.folder }}.spdx.json \
             --type spdx \
-            ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}:${{ steps.build.outputs.digest  }}
+            ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}@${{ steps.build.outputs.digest }}
