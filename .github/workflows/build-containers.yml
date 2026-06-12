@@ -134,13 +134,7 @@ jobs:
           format: sarif
           output: trivy-${{ needs.detect.outputs.folder }}.sarif
           severity: CRITICAL,HIGH
-
-      - name: Upload Trivy results to Security tab
-        if: steps.trivy.outcome != 'skipped'
-        uses: github/codeql-action/upload-sarif@v4
-        with:
-          sarif_file: trivy-${{ needs.detect.outputs.folder }}.sarif
-          category: trivy-${{ needs.detect.outputs.folder }}
+          exit-code: '1'
 
       - name: Generate SBOM
         uses: anchore/sbom-action@v0
