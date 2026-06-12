@@ -29,7 +29,8 @@ RUN Rscript -e "\
         'bioc::SeqArray', \
         'bioc::SNPRelate', \
         'adhikari-statgen-lab/fastman' \
-    ))"
+    )); \
+    pak::cache_delete()" 
 
 
 # Switch to non-root user
