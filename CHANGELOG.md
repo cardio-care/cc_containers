@@ -11,6 +11,8 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+- Fix adding SBOM to sign
+
 ## 2026-06-12
  
 ### Added
