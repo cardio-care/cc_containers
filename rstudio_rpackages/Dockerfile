@@ -4,7 +4,7 @@ LABEL version="1.0.0"
 
 # Install system dependencies and create non-root user
 RUN apt-get update && apt-get upgrade -y \
-    && apt-get install -y cmake=4.3.3 --no-install-recommends  \
+    && apt-get install -y cmake=4.2.3 --no-install-recommends  \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
