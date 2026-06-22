@@ -4,8 +4,11 @@ LABEL version="1.0.0"
 
 # Install system dependencies and create non-root user
 RUN apt-get update && apt-get upgrade -y \
-    && apt-get clean cmake \
+    && apt-get install -y cmake \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Install pak and renv R packages
 RUN install2.r --error pak renv
 
 # Create non-root user
