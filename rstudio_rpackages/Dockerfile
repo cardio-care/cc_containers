@@ -1,10 +1,10 @@
-FROM rocker/tidyverse:4.6.0
+FROM rocker/tidyverse:4.5.1
 
 LABEL version="1.0.0"
 
 # Install system dependencies and create non-root user
 RUN apt-get update && apt-get upgrade -y \
-    && apt-get clean \
+    && apt-get clean cmake \
     && rm -rf /var/lib/apt/lists/*
 RUN install2.r --error pak renv
 
