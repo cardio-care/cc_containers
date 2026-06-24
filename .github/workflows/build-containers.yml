@@ -194,7 +194,7 @@ jobs:
             ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}:latest
 
       - name: Sign image with Cosign
-        uses: sigstore/cosign-installer@v4.1.0
+        uses: sigstore/cosign-installer@v4.1.2
 
       - name: Sign and attach SBOM
         run: |
