@@ -55,7 +55,7 @@ RUN Rscript -e "\
         'RcppArmadillo@15.4.0-1', \
         'RcppTN@0.2-2', \
         'readr@2.2.0', \
-        'remotes@2.5.0', 
+        'remotes@2.5.0', \
         'reshape@0.8.10', \
         'RISCA@1.0.7', \
         'R.utils@2.13.0', \
@@ -68,7 +68,7 @@ RUN Rscript -e "\
 ENV MUSSEL_HOME=/opt/MUSSEL
 RUN git clone --depth 1 https://github.com/Jin93/MUSSEL.git ${MUSSEL_HOME} \
     && chmod +x ${MUSSEL_HOME}/R/*.R \
-    && sed -i "s/pryr/rlang/g" ${MUSSEL_HOME}/R/*.R
+    && sed -i 's/pryr/rlang/g' ${MUSSEL_HOME}/R/*.R
  
 WORKDIR ${MUSSEL_HOME} 
 
