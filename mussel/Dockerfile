@@ -16,8 +16,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libbz2-dev=1.0.8-5.1build0.1 \
     liblzma-dev=5.6.1+really5.4.5-1ubuntu0.3 \
     uuid-dev=2.39.3-9ubuntu6.5 \
-    && rm -rf /var/lib/apt/lists/*
- RUN install2.r --error pak
+    && rm -rf /var/lib/apt/lists/* \
+    &&  install2.r --error pak
 
 
 # Create non-root user
@@ -51,11 +51,11 @@ RUN Rscript -e "\
         'optparse@1.8.2', \
         'parallel@3.6.2', \
         'pROC@1.19.0.1', \
-        'pryr@0.1.6', \
         'Rcpp@1.1.1-1.1', \
         'RcppArmadillo@15.4.0-1', \
         'RcppTN@0.2-2', \
         'readr@2.2.0', \
+        'remotes@2.5.0', 
         'reshape@0.8.10', \
         'RISCA@1.0.7', \
         'R.utils@2.13.0', \
@@ -63,11 +63,12 @@ RUN Rscript -e "\
         'SuperLearner@2.0-40', \
         'xtable@1.8-8' \
     )); \
-    pak::cache_delete()" 
+    pak::cache_delete()"
 
 ENV MUSSEL_HOME=/opt/MUSSEL
 RUN git clone --depth 1 https://github.com/Jin93/MUSSEL.git ${MUSSEL_HOME} \
-    && chmod +x ${MUSSEL_HOME}/R/*.R
+    && chmod +x ${MUSSEL_HOME}/R/*.R \
+    && sed -i 's/pryr/rlang/g' ${MUSSEL_HOME}/R/*.R
  
 WORKDIR ${MUSSEL_HOME} 
 
