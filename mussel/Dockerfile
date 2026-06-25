@@ -7,27 +7,27 @@ ENV DEBIAN_FRONTEND=noninteractive \
     TZ=Etc/UTC
  
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential=12.12 \
-    gfortran=4:15.2.0-5 \
-    libopenblas-dev=0.3.33+ds-3 \
-    liblapack-dev=3.12.1-7 \
-    libcurl4-openssl-dev=8.21.0~rc3-1 \
-    libssl-dev=3.6.3-1 \
-    libxml2-dev=2.15.3+dfsg-1 \
-    libgit2-dev=1.9.4+ds-1 \
-    libssh2-1-dev=1.11.1-4 \
-    ca-certificates=20260601 \
-    git=1:2.53.0-1 \
-    libicu-dev=78.3-2 \
-    tzdata=2026b-1 \
-    locales=2.42-17 \
-    zlib1g-dev=1:1.3.dfsg+really1.3.2-3 \
-    libbz2-dev=1.0.8-6 \
-    liblzma-dev=5.8.3-1 \
-    perl=5.40.1-8 \
-    uuid-dev=2.42.2-1 \
+    build-essential=12.12 
+RUN apt-get install -y --no-install-recommends gfortran=4:15.2.0-5 
+RUN apt-get install -y --no-install-recommends   libopenblas-dev=0.3.33+ds-3 
+RUN apt-get install -y --no-install-recommends   liblapack-dev=3.12.1-7 
+RUN apt-get install -y --no-install-recommends   libcurl4-openssl-dev=8.21.0~rc3-1 
+RUN apt-get install -y --no-install-recommends   libssl-dev=3.6.3-1 
+RUN apt-get install -y --no-install-recommends   libxml2-dev=2.15.3+dfsg-1 
+RUN apt-get install -y --no-install-recommends   libgit2-dev=1.9.4+ds-1 
+RUN apt-get install -y --no-install-recommends  libssh2-1-dev=1.11.1-4 
+RUN apt-get install -y --no-install-recommends  ca-certificates=20260601 
+RUN apt-get install -y --no-install-recommends  git=1:2.53.0-1 
+RUN apt-get install -y --no-install-recommends  libicu-dev=78.3-2 
+RUN apt-get install -y --no-install-recommends  tzdata=2026b-1 
+RUN apt-get install -y --no-install-recommends  locales=2.42-17 
+RUN apt-get install -y --no-install-recommends  zlib1g-dev=1:1.3.dfsg+really1.3.2-3 
+RUN apt-get install -y --no-install-recommends  libbz2-dev=1.0.8-6 
+RUN apt-get install -y --no-install-recommends  liblzma-dev=5.8.3-1 
+RUN apt-get install -y --no-install-recommends  perl=5.40.1-8 
+RUN apt-get install -y --no-install-recommends  uuid-dev=2.42.2-1 \
     && rm -rf /var/lib/apt/lists/*
- RUN install2.r --error pak
+RUN install2.r --error pak
 
 
 # Create non-root user
