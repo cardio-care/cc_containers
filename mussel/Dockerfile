@@ -62,7 +62,8 @@ RUN Rscript -e "\
         'SuperLearner@2.0-40', \
         'xtable@1.8-8' \
     )); \
-    pak::cache_delete()"
+    pak::cache_delete()" \
+    && rm /usr/local/lib/R/site-library/openssl/doc/keys.html
 
 ENV MUSSEL_HOME=/opt/MUSSEL
 RUN git clone --depth 1 https://github.com/Jin93/MUSSEL.git ${MUSSEL_HOME} \
