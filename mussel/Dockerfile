@@ -68,7 +68,7 @@ RUN Rscript -e "\
 ENV MUSSEL_HOME=/opt/MUSSEL
 RUN git clone --depth 1 https://github.com/Jin93/MUSSEL.git ${MUSSEL_HOME} \
     && chmod +x ${MUSSEL_HOME}/R/*.R \
-    && sed -i 's/pryr/rlang/g' ${MUSSEL_HOME}/R/*.R
+    && sed -i "s/pryr/rlang/g" ${MUSSEL_HOME}/R/*.R
  
 WORKDIR ${MUSSEL_HOME} 
 
