@@ -71,6 +71,7 @@ RUN git clone --depth 1 https://github.com/Jin93/MUSSEL.git ${MUSSEL_HOME} \
     && sed -i 's/pryr/rlang/g' ${MUSSEL_HOME}/R/*.R
  
 WORKDIR ${MUSSEL_HOME} 
+RUN rm /usr/local/lib/R/site-library/openssl/doc/keys.html
 
 # Switch to non-root user
 USER bio
