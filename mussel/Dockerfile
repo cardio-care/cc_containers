@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libbz2-dev=1.0.8-5.1build0.1 \
     liblzma-dev=5.6.1+really5.4.5-1ubuntu0.3 \
     uuid-dev=2.39.3-9ubuntu6.5 \
+    curl=8.5.0-2ubuntu10.9 \
     && rm -rf /var/lib/apt/lists/* \
     &&  install2.r --error pak
 
@@ -65,10 +66,24 @@ RUN Rscript -e "\
     pak::cache_delete()" \
     && rm /usr/local/lib/R/site-library/openssl/doc/keys.html
 
+# Install PLINK
+WORKDIR /tmp
+
+ARG PLINK_VERSION=plink_linux_x86_64_20250819
+RUN curl https://s3.amazonaws.com/plink1-assets/${PLINK_VERSION}.zip --output plink1.zip
+RUN unzip plink1.zip
+COPY --from=unzip plink /usr/bin/plink
+
+ARG PLINK2_VERSION=plink2_linux_x86_64_latest
+RUN curl https://s3.amazonaws.com/plink2-assets/${PLINK2_VERSION}.zip --output plink2.zip
+RUN unzip plink2.zip
+COPY --from=unzip plink2 /usr/bin/plink2
+
+# Install MUSSEL
 ENV MUSSEL_HOME=/opt/MUSSEL
 RUN git clone --depth 1 https://github.com/Jin93/MUSSEL.git ${MUSSEL_HOME} \
     && chmod +x ${MUSSEL_HOME}/R/*.R \
-    && sed -i 's/pryr/rlang/g' ${MUSSEL_HOME}/R/*.R
+    && sed -i '/pryr/d' ${MUSSEL_HOME}/R/*.R
  
 WORKDIR ${MUSSEL_HOME} 
 
