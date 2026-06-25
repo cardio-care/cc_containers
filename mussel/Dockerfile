@@ -2,30 +2,20 @@
 FROM rocker/r-ver:4.6.1
  
 LABEL version="1.0.0"
-
-ENV DEBIAN_FRONTEND=noninteractive \
-    TZ=Etc/UTC
  
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    gfortran \
-    libopenblas-dev \
-    liblapack-dev \
-    libcurl4-openssl-dev \
-    libssl-dev \
-    libxml2-dev \
-    libgit2-dev=1.9.4+ds-1 \
-    libssh2-1-dev \
-    ca-certificates \
-    git \
-    libicu-dev \
-    tzdata \
-    locales \
-    zlib1g-dev \
-    libbz2-dev \
-    liblzma-dev \
-    perl \
-    uuid-dev \
+    build-essential=12.10ubuntu1 \
+    libcurl4-openssl-dev=8.5.0-2ubuntu10.9 \
+    libssl-dev=3.0.13-0ubuntu3.11 \
+    libxml2-dev=2.9.14+dfsg-1.3ubuntu3.8 \
+    libgit2-dev=1.7.2+ds-1ubuntu3 \
+    libssh2-1-dev=1.11.0-4.1ubuntu0.24.04.1 \
+    git=1:2.43.0-1ubuntu7.3 \
+    libicu-dev=74.2-1ubuntu3.1 \
+    zlib1g-dev=1:1.3.dfsg-3.1ubuntu2.1 \
+    libbz2-dev=1.0.8-5.1build0.1 \
+    liblzma-dev=5.6.1+really5.4.5-1ubuntu0.3 \
+    uuid-dev=2.39.3-9ubuntu6.5 \
     && rm -rf /var/lib/apt/lists/*
  RUN install2.r --error pak
 
