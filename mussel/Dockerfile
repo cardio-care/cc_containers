@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     TZ=Etc/UTC
  
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential=12.12  \
+    build-essential  \
     && rm -rf /var/lib/apt/lists/*
 RUN apt-get install -y --no-install-recommends gfortran=4:15.2.0-5  \
     && rm -rf /var/lib/apt/lists/*
