@@ -6,7 +6,6 @@ LABEL version="1.0.0"
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential=12.10ubuntu1 \
     libcurl4-openssl-dev=8.5.0-2ubuntu10.9 \
-    libssl-dev=3.0.13-0ubuntu3.11 \
     libxml2-dev=2.9.14+dfsg-1.3ubuntu3.8 \
     libgit2-dev=1.7.2+ds-1ubuntu3 \
     libssh2-1-dev=1.11.0-4.1ubuntu0.24.04.1 \
@@ -71,7 +70,6 @@ RUN git clone --depth 1 https://github.com/Jin93/MUSSEL.git ${MUSSEL_HOME} \
     && sed -i 's/pryr/rlang/g' ${MUSSEL_HOME}/R/*.R
  
 WORKDIR ${MUSSEL_HOME} 
-RUN rm /usr/local/lib/R/site-library/openssl/doc/keys.html
 
 # Switch to non-root user
 USER bio
