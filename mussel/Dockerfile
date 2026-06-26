@@ -19,7 +19,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     &&  install2.r --error pak
 
-
 # Create non-root user
 RUN touch /etc/passwd /etc/group \
     && groupadd -r bio --gid 1001 \
@@ -70,14 +69,14 @@ RUN Rscript -e "\
 WORKDIR /tmp
 
 ARG PLINK_VERSION=plink_linux_x86_64_20250819
-RUN curl https://s3.amazonaws.com/plink1-assets/${PLINK_VERSION}.zip --output plink1.zip
-RUN unzip plink1.zip
-COPY --from=unzip plink /usr/bin/plink
+RUN curl https://s3.amazonaws.com/plink1-assets/${PLINK_VERSION}.zip --output plink1.zip \
+    && unzip plink1.zip
+COPY plink /usr/bin/plink
 
 ARG PLINK2_VERSION=plink2_linux_x86_64_latest
-RUN curl https://s3.amazonaws.com/plink2-assets/${PLINK2_VERSION}.zip --output plink2.zip
-RUN unzip plink2.zip
-COPY --from=unzip plink2 /usr/bin/plink2
+RUN curl https://s3.amazonaws.com/plink2-assets/${PLINK2_VERSION}.zip --output plink2.zip \
+    && unzip plink2.zip
+COPY plink2 /usr/bin/plink2
 
 # Install MUSSEL
 ENV MUSSEL_HOME=/opt/MUSSEL
