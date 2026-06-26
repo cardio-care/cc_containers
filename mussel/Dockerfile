@@ -1,4 +1,19 @@
 
+FROM rocker/r-ver:4.6.1 AS unzip
+
+# Install PLINK
+WORKDIR /tmp
+
+ARG PLINK_VERSION=plink_linux_x86_64_20250819
+RUN curl https://s3.amazonaws.com/plink1-assets/${PLINK_VERSION}.zip --output plink1.zip \
+    && unzip plink1.zip \
+    && rm plink1.zip
+
+ARG PLINK2_VERSION=plink2_linux_x86_64_latest
+RUN curl https://s3.amazonaws.com/plink2-assets/${PLINK2_VERSION}.zip --output plink2.zip \
+    && unzip plink2.zip \
+    && rm plink2.zip
+
 FROM rocker/r-ver:4.6.1
  
 LABEL version="1.0.0"
@@ -65,20 +80,8 @@ RUN Rscript -e "\
     pak::cache_delete()" \
     && rm /usr/local/lib/R/site-library/openssl/doc/keys.html
 
-# Install PLINK
-WORKDIR /tmp
-
-ARG PLINK_VERSION=plink_linux_x86_64_20250819
-RUN curl https://s3.amazonaws.com/plink1-assets/${PLINK_VERSION}.zip --output plink1.zip \
-    && unzip plink1.zip \
-    && rm plink1.zip
-COPY plink /usr/bin/plink
-
-ARG PLINK2_VERSION=plink2_linux_x86_64_latest
-RUN curl https://s3.amazonaws.com/plink2-assets/${PLINK2_VERSION}.zip --output plink2.zip \
-    && unzip plink2.zip \
-    && rm plink2.zip
-COPY plink2 /usr/bin/plink2
+COPY --from=unzip plink /usr/bin/plink
+COPY --from=unzip plink2 /usr/bin/plink2
 
 # Install MUSSEL
 ENV MUSSEL_HOME=/opt/MUSSEL
