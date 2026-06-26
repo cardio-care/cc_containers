@@ -83,8 +83,8 @@ RUN Rscript -e "\
     pak::cache_delete()" \
     && rm /usr/local/lib/R/site-library/openssl/doc/keys.html
 
-COPY --from=unzip plink /usr/bin/plink
-COPY --from=unzip plink2 /usr/bin/plink2
+COPY --from=unzip /tmp/plink /usr/bin/plink
+COPY --from=unzip /tmp/plink2 /usr/bin/plink2
 
 # Install MUSSEL
 ENV MUSSEL_HOME=/opt/MUSSEL
