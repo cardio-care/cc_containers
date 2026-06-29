@@ -92,11 +92,9 @@ jobs:
 
       - name: Lint Dockerfile
         uses: hadolint/hadolint-action@v3.3.0
-        override:
-          info:
-            - DL3008
         with:
           dockerfile: ${{ needs.detect.outputs.folder }}/Dockerfile
+          override-info: DL3008
 
       - name: Gitleaks detect leaked secrets
         uses: gitleaks/gitleaks-action@v3
