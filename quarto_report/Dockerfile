@@ -1,4 +1,4 @@
-FROM rocker/tidyverse:4.6.0
+FROM rocker/tidyverse:4.6.1
 
 LABEL version="1.1.0"
 
