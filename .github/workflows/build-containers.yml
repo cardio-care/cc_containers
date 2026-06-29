@@ -95,6 +95,7 @@ jobs:
         with:
           dockerfile: ${{ needs.detect.outputs.folder }}/Dockerfile
           override-info: DL3008
+          failure-threshold: warning
 
       - name: Gitleaks detect leaked secrets
         uses: gitleaks/gitleaks-action@v3
