@@ -1,15 +1,6 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## 2026-06-30
-
-## Added
-
-## Changed
-- Changed Hadolint error threshold to `info`
-
-## Fixed
-
 ## 2026-06-15
  
 ### Added
