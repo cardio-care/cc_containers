@@ -1,6 +1,6 @@
 FROM rocker/tidyverse:4.6.0
 
-LABEL version="1.0.0"
+LABEL version="1.1.0"
 
 # Install system dependencies and create non-root user
 RUN apt-get update && apt-get upgrade -y \
@@ -12,6 +12,9 @@ RUN apt-get update && apt-get upgrade -y \
 	libbz2-dev \
 	--no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
+
+# Set default Repo to PPM, fallback to CRAN
+RUN echo 'options(repos = c(P3M = "https://packagemanager.posit.co/cran/__linux__/jammy/latest", CRAN = "https://cloud.r-project.org"))' >> "${R_HOME}/etc/Rprofile.site"
 
 # Create non-root user
 RUN touch /etc/passwd /etc/group \
