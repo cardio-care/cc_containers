@@ -200,6 +200,17 @@ jobs:
           
       - name: Sign image with Cosign
         uses: sigstore/cosign-installer@v4.1.2
+        
+      - name: Inspect SBOM structure
+        run: |
+          echo "=== File type ==="
+          file sbom-${{ needs.detect.outputs.folder }}.spdx.json
+          echo "=== First 500 chars ==="
+          head -c 500 sbom-${{ needs.detect.outputs.folder }}.spdx.json
+          echo "=== Top level keys ==="
+          jq 'keys' sbom-${{ needs.detect.outputs.folder }}.spdx.json
+          echo "=== SPDX version field ==="
+          jq '.spdxVersion' sbom-${{ needs.detect.outputs.folder }}.spdx.json
 
       - name: Test Rekor connectivity
         env:
@@ -210,7 +221,7 @@ jobs:
             --type spdx \
             --bundle /tmp/test-attest.bundle \
             sbom-${{ needs.detect.outputs.folder }}.spdx.json
-            
+
   push:
     runs-on: ubuntu-latest
     needs: [ detect, build ]
