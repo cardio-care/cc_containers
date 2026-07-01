@@ -223,6 +223,23 @@ jobs:
           wc -c sbom-trimmed_files.spdx.json
           echo "=== Trimmed license size ==="
           wc -c sbom-trimmed_license.spdx.json
+          jq 'del(.files) | .relationships |= map(select(
+                  (.spdxElementId | startswith("SPDXRef-File-") | not) and
+                  (.relatedSpdxElement | startswith("SPDXRef-File-") | not)
+                ))' \
+            sbom-${{ needs.detect.outputs.folder }}.spdx.json \
+            > sbom-${{ needs.detect.outputs.folder }}-trim.spdx.json
+          echo "=== Size ==="
+          wc -c sbom-${{ needs.detect.outputs.folder }}-trim.spdx.json
+          echo "=== Line count ==="
+          wc -l sbom-${{ needs.detect.outputs.folder }}-trim.spdx.json
+          echo "=== Valid JSON? ==="
+          jq empty sbom-${{ needs.detect.outputs.folder }}-trim.spdx.json
+          echo "=== Sample relationship ==="
+          jq '.relationships[0]' sbom-${{ needs.detect.outputs.folder }}-trim.spdx.json
+          echo "=== Any file refs remaining? ==="
+          jq '[.relationships[] | select(.spdxElementId | startswith("SPDXRef-File-"))] | length' \
+            sbom-${{ needs.detect.outputs.folder }}-trim.spdx.json
 
       - name: Test Rekor connectivity
         env:
