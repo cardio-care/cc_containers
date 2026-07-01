@@ -180,6 +180,20 @@ jobs:
       - name: Validate downloaded SBOM
         run: jq empty sbom-${{ needs.detect.outputs.folder }}.spdx.json
         
+      - name: Debug Rekor connectivity
+        run: |
+          echo "=== DNS resolution ==="
+          nslookup rekor.sigstore.dev
+
+          echo "=== TCP reachability ==="
+          curl -v --max-time 10 https://rekor.sigstore.dev/api/v1/log
+
+          echo "=== Proxy env vars ==="
+          env | grep -i proxy || echo "none set"
+
+          echo "=== Traceroute ==="
+          traceroute -m 15 rekor.sigstore.dev || true
+
   push:
     runs-on: ubuntu-latest
     needs: [ detect, build ]
