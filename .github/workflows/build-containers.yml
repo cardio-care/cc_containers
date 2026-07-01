@@ -228,14 +228,15 @@ jobs:
         env:
           COSIGN_VERBOSE: "1"
         run: |
-          jq . sbom-${{ needs.detect.outputs.folder }}.spdx.json \
-            > sbom-${{ needs.detect.outputs.folder }}-pretty.spdx.json
+          jq 'del(.files)' \
+            sbom-${{ needs.detect.outputs.folder }}.spdx.json \
+            > sbom-${{ needs.detect.outputs.folder }}-trim.spdx.json
 
           cosign attest-blob --yes \
-            --predicate sbom-${{ needs.detect.outputs.folder }}-pretty.spdx.json \
+            --predicate sbom-${{ needs.detect.outputs.folder }}-trim.spdx.json \
             --type spdx \
             --bundle /tmp/test-attest.bundle \
-            sbom-${{ needs.detect.outputs.folder }}-pretty.spdx.json
+            sbom-${{ needs.detect.outputs.folder }}-trim.spdx.json
 
   push:
     runs-on: ubuntu-latest
