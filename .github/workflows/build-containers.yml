@@ -193,6 +193,16 @@ jobs:
 
           echo "=== Traceroute ==="
           traceroute -m 15 rekor.sigstore.dev || true
+          
+      - name: Sign image with Cosign
+        uses: sigstore/cosign-installer@v4.1.2
+
+      - name: Test Rekor connectivity
+        env:
+          COSIGN_VERBOSE: "1"
+        run: |
+          echo "rekor connectivity test" > test-artifact.txt
+          cosign sign-blob --yes test-artifact.txt
 
   push:
     runs-on: ubuntu-latest
