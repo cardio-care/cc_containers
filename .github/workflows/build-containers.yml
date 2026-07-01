@@ -157,7 +157,7 @@ jobs:
   
   test:
     runs-on: ubuntu-latest
-    needs: build
+    needs: [ detect, build ]
     if: needs.detect.outputs.folder != ''
     steps:
       - name: Checkout code
