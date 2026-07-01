@@ -200,7 +200,7 @@ jobs:
           
       - name: Sign image with Cosign
         uses: sigstore/cosign-installer@v4.1.2
-        
+
       - name: Inspect SBOM structure
         run: |
           echo "=== File type ==="
@@ -216,11 +216,14 @@ jobs:
         env:
           COSIGN_VERBOSE: "1"
         run: |
+          jq . sbom-${{ needs.detect.outputs.folder }}.spdx.json \
+            > sbom-${{ needs.detect.outputs.folder }}-pretty.spdx.json
+
           cosign attest-blob --yes \
-            --predicate sbom-${{ needs.detect.outputs.folder }}.spdx.json \
+            --predicate sbom-${{ needs.detect.outputs.folder }}-pretty.spdx.json \
             --type spdx \
             --bundle /tmp/test-attest.bundle \
-            sbom-${{ needs.detect.outputs.folder }}.spdx.json
+            sbom-${{ needs.detect.outputs.folder }}-pretty.spdx.json
 
   push:
     runs-on: ubuntu-latest
