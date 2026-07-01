@@ -211,6 +211,18 @@ jobs:
           jq 'keys' sbom-${{ needs.detect.outputs.folder }}.spdx.json
           echo "=== SPDX version field ==="
           jq '.spdxVersion' sbom-${{ needs.detect.outputs.folder }}.spdx.json
+          jq 'del(.files)' \
+            sbom-${{ needs.detect.outputs.folder }}.spdx.json \
+            > sbom-trimmed_files.spdx.json
+          jq 'del(.hasExtractedLicensingInfos)' \
+            sbom-${{ needs.detect.outputs.folder }}.spdx.json \
+            > sbom-trimmed_license.spdx.json
+          echo "=== Original size ==="
+          wc -c sbom-${{ needs.detect.outputs.folder }}.spdx.json
+          echo "=== Trimmed file size ==="
+          wc -c sbom-trimmed_files.spdx.json
+          echo "=== Trimmed license size ==="
+          wc -c sbom-trimmed_license.spdx.json
 
       - name: Test Rekor connectivity
         env:
