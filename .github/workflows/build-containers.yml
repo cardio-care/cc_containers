@@ -253,6 +253,9 @@ jobs:
             sbom-${{ needs.detect.outputs.folder }}.spdx.json \
             > sbom-${{ needs.detect.outputs.folder }}-trim.spdx.json
 
+          echo "=== Cosign version ==="
+            cosign version
+
           cosign attest-blob --yes \
             --predicate sbom-${{ needs.detect.outputs.folder }}-trim.spdx.json \
             --type spdx \
