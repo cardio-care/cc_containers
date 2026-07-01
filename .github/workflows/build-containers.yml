@@ -200,6 +200,8 @@ jobs:
           
       - name: Sign image with Cosign
         uses: sigstore/cosign-installer@v4.1.2
+        with:
+          cosign-release: 'v3.1.1'
 
       - name: Inspect SBOM structure
         run: |
