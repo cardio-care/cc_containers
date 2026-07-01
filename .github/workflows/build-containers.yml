@@ -228,7 +228,11 @@ jobs:
         env:
           COSIGN_VERBOSE: "1"
         run: |
-          jq 'del(.files)' \
+          jq 'del(.files) | 
+              .relationships |= map(select(
+                (.spdxElementId | startswith("SPDXRef-File-") | not) and
+                (.relatedSpdxElement | startswith("SPDXRef-File-") | not)
+              ))' \
             sbom-${{ needs.detect.outputs.folder }}.spdx.json \
             > sbom-${{ needs.detect.outputs.folder }}-trim.spdx.json
 
