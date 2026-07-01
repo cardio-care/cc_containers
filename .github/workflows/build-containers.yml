@@ -205,9 +205,12 @@ jobs:
         env:
           COSIGN_VERBOSE: "1"
         run: |
-          echo "rekor connectivity test" > test-artifact.txt
-          cosign sign-blob --yes --bundle /tmp/test.bundle test-artifact.txt
-
+          cosign attest-blob --yes \
+            --predicate sbom-${{ needs.detect.outputs.folder }}.spdx.json \
+            --type spdx \
+            --bundle /tmp/test-attest.bundle \
+            sbom-${{ needs.detect.outputs.folder }}.spdx.json
+            
   push:
     runs-on: ubuntu-latest
     needs: [ detect, build ]
