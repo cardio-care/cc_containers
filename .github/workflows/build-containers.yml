@@ -206,7 +206,7 @@ jobs:
           COSIGN_VERBOSE: "1"
         run: |
           echo "rekor connectivity test" > test-artifact.txt
-          cosign sign-blob --yes test-artifact.txt
+          cosign sign-blob --yes --bundle /tmp/test.bundle test-artifact.txt
 
   push:
     runs-on: ubuntu-latest
