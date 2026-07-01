@@ -144,6 +144,9 @@ jobs:
           image: ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}:${{ needs.detect.outputs.base-version }}
           artifact-name: sbom-${{ needs.detect.outputs.folder }}.spdx.json
           output-file: sbom-${{ needs.detect.outputs.folder }}.spdx.json
+      
+      - name: Validate generated SBOM
+        run: jq empty sbom-${{ needs.detect.outputs.folder }}.spdx.json
 
       - name: Upload SBOM as artifact
         uses: actions/upload-artifact@v7
@@ -197,13 +200,24 @@ jobs:
 
       - name: Sign image with Cosign
         uses: sigstore/cosign-installer@v4.1.2
+        with:
+          cosign-release: 'v2.6.3'
 
       - name: Sign and attach SBOM
         run: |
           cosign sign --yes \
             ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}@${{ steps.build.outputs.digest }}
           
+          jq 'del(.files) | 
+              .relationships |= map(select(
+                (.spdxElementId | startswith("SPDXRef-File-") | not) and
+                (.relatedSpdxElement | startswith("SPDXRef-File-") | not)
+              ))' \
+            sbom-${{ needs.detect.outputs.folder }}.spdx.json \
+            > sbom-${{ needs.detect.outputs.folder }}-trim.spdx.json
+
           cosign attest --yes \
-            --predicate sbom-${{ needs.detect.outputs.folder }}.spdx.json \
+            --predicate sbom-${{ needs.detect.outputs.folder }}-trim.spdx.json \
             --type spdx \
             ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}@${{ steps.build.outputs.digest }}
+
