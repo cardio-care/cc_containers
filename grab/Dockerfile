@@ -10,14 +10,16 @@ RUN apt-get update && apt-get upgrade -y \
     && rm -rf /var/lib/apt/lists/*
 RUN install2.r --error pak
 
+WORKDIR /tmp
 RUN wget --progress=dot:giga https://yanglab.westlake.edu.cn/software/gcta/bin/gcta-1.95.2-linux-x86_64.zip -O /tmp/gcta.zip \
     && unzip -q /tmp/gcta.zip -d /tmp/gcta_extracted \
     && cp /tmp/gcta_extracted/gcta-1.95.2-linux-x86_64/gcta /tmp/gcta.AppImage \
     && chmod +x /tmp/gcta.AppImage \
-    && cd /tmp && /tmp/gcta.AppImage --appimage-extract \
+    && /tmp/gcta.AppImage --appimage-extract \
     && mv /tmp/squashfs-root /opt/gcta \
     && ln -s /opt/gcta/AppRun /usr/local/bin/gcta64 \
     && rm -rf /tmp/gcta.zip /tmp/gcta_extracted /tmp/gcta.AppImage
+WORKDIR /
 
 # Create non-root user
 RUN touch /etc/passwd /etc/group \
