@@ -12,6 +12,7 @@ RUN install2.r --error pak
 
 RUN wget --progress=dot:giga https://yanglab.westlake.edu.cn/software/gcta/bin/gcta-1.95.2-linux-x86_64.zip -O /tmp/gcta.zip \
     && unzip -q /tmp/gcta.zip -d /tmp/gcta_extracted \
+    && find /tmp/gcta_extracted -maxdepth 3 \
     && cp /tmp/gcta_extracted/gcta /usr/local/bin/gcta64 \
     && chmod +x /usr/local/bin/gcta64 \
     && rm -rf /tmp/gcta.zip /tmp/gcta_extracted
