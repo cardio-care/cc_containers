@@ -35,7 +35,8 @@ RUN Rscript -e "\
         'RcppParallel@5.1.11-2', \
         'igraph@2.3.3', \
         'R.utils@2.13.0', \
-        'GRAB@0.2.5' \
+        'GRAB@0.2.5', \
+        'optparse@1.8.2' \
     )); \
     pak::cache_delete()" 
 
