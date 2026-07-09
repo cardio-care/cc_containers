@@ -8,7 +8,7 @@ RUN apt-get update && apt-get upgrade -y \
     && rm -rf /var/lib/apt/lists/*
 RUN install2.r --error pak
 
-RUN wget https://yanglab.westlake.edu.cn/software/gcta/bin/gcta-1.95.2-linux-x86_64.zip \
+RUN wget --progress=dot:giga https://yanglab.westlake.edu.cn/software/gcta/bin/gcta-1.95.2-linux-x86_64.zip \
     && unzip gcta-1.95.2-linux-x86_64.zip
 COPY gcta-1.95.2-linux-x86_64/gcta /usr/bin/
 
