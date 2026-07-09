@@ -4,13 +4,17 @@ LABEL version="1.0.0"
 
 # Install system dependencies and create non-root user
 RUN apt-get update && apt-get upgrade -y \
+    wget \
+    unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 RUN install2.r --error pak
 
-RUN wget --progress=dot:giga https://yanglab.westlake.edu.cn/software/gcta/bin/gcta-1.95.2-linux-x86_64.zip \
-    && unzip gcta-1.95.2-linux-x86_64.zip
-COPY gcta-1.95.2-linux-x86_64/gcta /usr/bin/
+RUN wget --progress=dot:giga https://yanglab.westlake.edu.cn/software/gcta/bin/gcta-1.95.2-linux-x86_64.zip -O /tmp/gcta.zip \
+    && unzip -q /tmp/gcta.zip -d /tmp/gcta_extracted \
+    && cp /tmp/gcta_extracted/gcta /usr/local/bin/gcta64 \
+    && chmod +x /usr/local/bin/gcta64 \
+    && rm -rf /tmp/gcta.zip /tmp/gcta_extracted
 
 # Create non-root user
 RUN touch /etc/passwd /etc/group \
