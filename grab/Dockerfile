@@ -35,6 +35,9 @@ RUN Rscript -e "\
         'RcppParallel@5.1.11-2', \
         'igraph@2.3.3', \
         'R.utils@2.13.0', \
+        'SKAT@2.2.5', \
+        'pkgload@1.5.3', \
+        'dbplyr@2.5.2', \
         'GRAB@0.2.5', \
         'optparse@1.8.2' \
     )); \
