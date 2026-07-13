@@ -8,10 +8,10 @@ RUN apt-get update && apt-get upgrade -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN wget --progress=dot:giga https://github.com/GeneticAnalysisinBiobanks/GRAB/releases/download/v2.0.0a6/grab2-2.0.0a6-linux-x86_64.tar.gz -O /tmp/grab2-2.0.0a6-linux-x86_64.tar.gz \
-    && tar -xvzf /tmp/grab2-2.0.0a6-linux-x86_64.tar.gz \
-    && mv /tmp/grab2-2.0.0a6-linux-x86_64/grab2 /usr/local/bin/grab2 \
-    && rm -rf /tmp/grab2-2.0.0a6-linux-x86_64.tar.gz /tmp/grab2-2.0.0a6-linux-x86_64
+RUN wget --progress=dot:giga https://github.com/GeneticAnalysisinBiobanks/GRAB/releases/download/v2.0.0a6/grab2-2.0.0a6-linux-x86_64.tar.gz \
+    && tar -xvzf grab2-2.0.0a6-linux-x86_64.tar.gz \
+    && mv grab2-2.0.0a6-linux-x86_64/grab2 /usr/local/bin/grab2 \
+    && rm -rf grab2-2.0.0a6-linux-x86_64.tar.gz grab2-2.0.0a6-linux-x86_64
 
 # Create non-root user
 RUN touch /etc/passwd /etc/group \
