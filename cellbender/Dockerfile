@@ -7,27 +7,31 @@ RUN apt-get update \
          git curl gnupg \
     && rm -rf /var/lib/apt/lists/*
 
+# Create virtual environment
+WORKDIR /app
+RUN python -m venv /venv
+ENV PATH="/venv/bin:$PATH"
+
+# Install Cellbender
 RUN pip install --no-cache-dir \
     git+https://github.com/broadinstitute/CellBender@c5f5d9f41a2926a0b46515ccc4a3383d52a9ffa9
 
 # Stage 2: minimal runtime image
 FROM python:3.12-slim-bookworm
 
-LABEL version="1.0.1" \
-      org.opencontainers.image.title="CellBender" \
-      org.opencontainers.image.description="Remove technical artifacts from single-cell RNA-seq data" \
-      org.opencontainers.image.source="https://github.com/broadinstitute/CellBender"
+LABEL version="1.0.1"
 
-COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
-COPY --from=builder /usr/local/bin /usr/local/bin
+# Create non-root user
+RUN groupadd -r appuser \
+    && useradd --create-home -r -g appuser appuser
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-         libcurl4t64 \
-    && rm -rf /var/lib/apt/lists/* \
-    && useradd --create-home app
+# Copy virtual environment from builder
+COPY --from=builder /venv /venv
+ENV PATH="/venv/bin:$PATH"
 
-USER app
-WORKDIR /data
-ENTRYPOINT ["cellbender"]
+WORKDIR /app
 
+# Set ownership and switch to non-root user
+RUN chown -R appuser:appuser /app
+USER appuser
+ENV PATH="/venv/bin:$PATH"
