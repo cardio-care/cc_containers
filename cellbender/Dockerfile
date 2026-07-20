@@ -4,7 +4,7 @@ FROM python:3.12-slim-bookworm AS builder
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
          gcc g++ make \
-         git curl gnupg \
+         git \
     && rm -rf /var/lib/apt/lists/*
 
 # Create virtual environment
@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir \
 # Stage 2: minimal runtime image
 FROM python:3.12-slim-bookworm
 
-LABEL version="1.0.1"
+LABEL version="1.0.2"
 
 # Create non-root user
 RUN groupadd -r appuser \
