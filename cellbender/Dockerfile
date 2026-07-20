@@ -1,5 +1,5 @@
 # Stage 1: build CellBender and all Python dependencies
-FROM python:3.12-slim-bookworm AS builder
+FROM python:3.14-slim-bookworm AS builder
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir \
     git+https://github.com/broadinstitute/CellBender@c5f5d9f41a2926a0b46515ccc4a3383d52a9ffa9
 
 # Stage 2: minimal runtime image
-FROM python:3.12-slim-bookworm
+FROM python:3.14-slim-bookworm
 
 LABEL version="1.0.2"
 
