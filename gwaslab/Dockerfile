@@ -6,7 +6,7 @@ LABEL version="1.0.0"
 RUN groupadd -r appuser \
     && useradd --create-home -r -g appuser appuser
 
-RUN pip install --no-cache-dir numpy==2.5.0 pandas==3.0.4 gwaslab==4.0.2
+RUN pip install --no-cache-dir gwaslab==4.0.2
 
 WORKDIR /app
 
