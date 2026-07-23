@@ -18,6 +18,7 @@ RUN Rscript -e "\
         'argparse@2.3.1', \
         'dplyr@1.2.1', \
         'data.table@1.18.4', \
+        'bigsnpr@1.12.21', \
         'susieR@0.16.0' \
     )); \
     pak::cache_delete()" 
