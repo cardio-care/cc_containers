@@ -1,5 +1,7 @@
 FROM rocker/r-ver:4.6.0
 
+LABEL version="1.0.0"
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     procps \
     libcurl4-openssl-dev \
