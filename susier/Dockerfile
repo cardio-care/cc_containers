@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     procps \
     libcurl4-openssl-dev \
     libssl-dev \
+    linux-libc-dev=6.8.0-136.136 \
     && rm -rf /var/lib/apt/lists/*
 RUN install2.r --error pak
 
@@ -17,11 +18,13 @@ RUN touch /etc/passwd /etc/group \
 # Install R dependencies
 RUN Rscript -e "\
     pak::pkg_install(c( \
-        'argparse@2.3.1', \
+        'optparse@1.8.2', \
         'dplyr@1.2.1', \
         'data.table@1.18.4', \
         'bigsnpr@1.12.21', \
-        'susieR@0.16.0' \
+        'susieR@0.16.0', \
+        'ggrepel@0.9.8', \
+        'ggplot2@4.0.3' \
     )); \
     pak::cache_delete()" 
 
