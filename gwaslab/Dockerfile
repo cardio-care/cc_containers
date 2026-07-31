@@ -3,7 +3,8 @@ FROM python:3.12-slim
 LABEL version="4.1.6"
 
 RUN apt-get update && \
-    apt-get install -y procps && \
+    apt-get install --no-install-recommends -y \
+        procps=2:4.0.4-9 && \
     rm -rf /var/lib/apt/lists/*
 
 # Create non-root user
