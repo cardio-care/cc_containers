@@ -25,7 +25,7 @@ RUN Rscript -e "\
         'susieR@0.16.0', \
         'ggrepel@0.9.8', \
         'ggplot2@4.0.3', \
-        'coloc@6.0.1'
+        'coloc@6.0.1' \
     )); \
     pak::cache_delete()" 
 
