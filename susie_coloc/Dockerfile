@@ -1,6 +1,6 @@
 FROM rocker/r-ver:4.6.0
 
-LABEL version="1.0.0"
+LABEL version="2.0.0"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     procps \
@@ -24,7 +24,8 @@ RUN Rscript -e "\
         'bigsnpr@1.12.21', \
         'susieR@0.16.0', \
         'ggrepel@0.9.8', \
-        'ggplot2@4.0.3' \
+        'ggplot2@4.0.3', \
+        'coloc@6.0.1' \
     )); \
     pak::cache_delete()" 
 
