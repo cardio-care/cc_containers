@@ -1,4 +1,4 @@
-FROM python:3.13-slim-bullseye
+FROM python:3.13-slim-bookworm
 
 LABEL version="0.2.139"
 
