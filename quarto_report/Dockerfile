@@ -36,8 +36,7 @@ RUN Rscript -e "\
     )); \
     pak::cache_delete()" 
 
-RUN apt-get purge -y linux-libc-dev \
-    && apt-get clean \
+RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Switch to non-root user
