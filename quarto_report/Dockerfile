@@ -1,6 +1,6 @@
 FROM rocker/tidyverse:4.6.0
 
-LABEL version="1.2.0"
+LABEL version="1.3.0"
 
 # Install system dependencies and create non-root user
 RUN apt-get update && apt-get upgrade -y \
