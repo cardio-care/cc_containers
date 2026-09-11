@@ -31,7 +31,7 @@ RUN Rscript -e "\
         'bioc::snpStats', \
         'bioc::SeqArray', \
         'bioc::SNPRelate', \
-        'adhikari-statgen-lab/fastman' \
+        'adhikari-statgen-lab/fastman', \
         'seqminer@9.9' \
     )); \
     pak::cache_delete()" 
