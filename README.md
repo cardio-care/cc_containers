@@ -1,4 +1,4 @@
-[![Docker build](https://github.com/cardio-care/cc_containers/actions/workflows/build-containers.yml)](https://github.com/cardio-care/cc_containers/actions/workflows/build-containers.yml)
+[![Docker build](https://github.com/cardio-care/cc_containers/actions/workflows/build-containers.yml/badge.svg)](https://github.com/cardio-care/cc_containers/actions/workflows/build-containers.yml)
 
 # Docker Containers
 
