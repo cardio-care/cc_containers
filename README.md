@@ -1,3 +1,5 @@
+[![Docker build](https://github.com/cardio-care/cc_containers/actions/workflows/build-containers.yml)](https://github.com/cardio-care/cc_containers/actions/workflows/build-containers.yml)
+
 # Docker Containers
 
 This repository contains Docker containers for various bioinformatics and data science applications.
