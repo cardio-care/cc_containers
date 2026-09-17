@@ -1,6 +1,6 @@
 FROM rocker/tidyverse:4.6.0
 
-LABEL version="1.3.0"
+LABEL version="1.4.0"
 
 # Install system dependencies and create non-root user
 RUN apt-get update && apt-get upgrade -y \
@@ -32,7 +32,8 @@ RUN Rscript -e "\
         'bioc::SeqArray', \
         'bioc::SNPRelate', \
         'adhikari-statgen-lab/fastman', \
-        'seqminer@9.9' \
+        'seqminer@9.9', \
+        'DescTools@0.99.60' \
     )); \
     pak::cache_delete()" 
 
