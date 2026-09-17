@@ -32,7 +32,8 @@ RUN Rscript -e "\
         'bioc::SeqArray', \
         'bioc::SNPRelate', \
         'adhikari-statgen-lab/fastman', \
-        'seqminer@9.9' \
+        'seqminer@9.9', \
+        'DescTools@0.99.60' \
     )); \
     pak::cache_delete()" 
 
