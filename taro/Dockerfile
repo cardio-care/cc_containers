@@ -5,8 +5,6 @@ ENV R_LIBS_SITE=/usr/local/lib/R/site-library
 
 LABEL version="1.0.0"
 
-RUN R_LIBS_SITE=/usr/local/lib/R/site-library
-
 # Install system dependencies and create non-root user
 RUN apt-get update && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
@@ -24,8 +22,8 @@ RUN touch /etc/passwd /etc/group \
 
 # Site library setup
 RUN mkdir -p /usr/local/lib/R/site-library \
-    && echo '.Library.site <- "/usr/local/lib/R/site-library"' >> /usr/lib/R/etc/Rprofile.site \
-    && echo '.libPaths(c(.Library.site, .libPaths()))' >> /usr/lib/R/etc/Rprofile.site
+    && echo '.Library.site <- "/usr/local/lib/R/site-library"' >> /usr/local/lib/R/site-library/Rprofile.site \
+    && echo '.libPaths(c(.Library.site, .libPaths()))' >> /usr/local/lib/R/site-library/Rprofile.site
 
 # Install R dependencies
 RUN Rscript -e "\
