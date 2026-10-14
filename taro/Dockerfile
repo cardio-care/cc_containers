@@ -57,7 +57,7 @@ RUN Rscript -e "\
     pak::cache_delete()" 
 
 # Copy and install taro (placed last so earlier layers stay cached when source changes)
-COPY . /opt/taro
+COPY taro /opt/taro
 
 WORKDIR /tmp
 RUN PKG_VERSION=$(sed -n 's/^Version: *//p' /opt/taro/DESCRIPTION) \
