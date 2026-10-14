@@ -61,8 +61,8 @@ RUN Rscript -e "\
 # Copy and install taro (placed last so earlier layers stay cached when source changes)
 COPY . /opt/taro
 
-RUN PKG_VERSION=$(grep '^Version:' /opt/taro/DESCRIPTION | cut -d' ' -f2) \
-    && cd /tmp \
+WORKDIR /tmp
+RUN PKG_VERSION=$(sed -n 's/^Version: *//p' /opt/taro/DESCRIPTION) \
     && R CMD build /opt/taro \
     && Rscript -e "install.packages(paste0('taro_', '$PKG_VERSION', '.tar.gz'), repos = NULL, type = 'source', lib='/usr/local/lib/R/site-library')" \
     && rm -f /tmp/taro_*.tar.gz
@@ -73,5 +73,6 @@ RUN apt-get purge -y linux-libc-dev \
 
 # Switch to non-root user
 USER bio
+WORKDIR /home/bio
 
 # No default CMD
