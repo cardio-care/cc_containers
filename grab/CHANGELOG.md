@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - Change base image to rocker/r-ver, update to 4.6.1
+- update gcta to 1.95.4 and fix download
  
 ### Fixed
 
