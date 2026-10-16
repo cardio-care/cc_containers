@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
-- Change base image to rocker/r-rver, update to 4.6.1
+- Change base image to rocker/r-ver, update to 4.6.1
  
 ### Fixed
 

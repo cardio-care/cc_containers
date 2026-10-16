@@ -1,4 +1,4 @@
-FROM rocker/r-rver:4.6.1
+FROM rocker/r-ver:4.6.1
 
 LABEL version="2.0.0"
 
