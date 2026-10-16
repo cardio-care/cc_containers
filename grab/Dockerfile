@@ -51,7 +51,8 @@ RUN apt-get purge -y linux-libc-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /opt/grab
-COPY bin/cct_allow_na.R /opt/grab/
+COPY cct_allow_na.R /opt/grab/
+COPY LICENSE-Intel-ISSL /usr/share/common-licenses/
 
 LABEL org.opencontainers.image.description="Contains third-party software under multiple licenses; for full software license info see the SBOM attached to the release of the same tag and /usr/share/licenses/" \
       org.opencontainers.image.licenses="GPL-2.0-or-later AND LGPL-2.1-or-later AND AGPL-3.0-only AND MIT AND LicenseRef-Intel-ISSL"
