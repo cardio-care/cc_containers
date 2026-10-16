@@ -54,7 +54,7 @@ RUN mkdir /opt/grab
 COPY bin/cct_allow_na.R /opt/grab/
 
 LABEL org.opencontainers.image.description="Contains third-party software under multiple licenses; for full software license info see the SBOM attached to the release of the same tag and /usr/share/licenses/" \
-      org.opencontainers.image.licenses="GPL-2.0-or-later,Intel-ISSL"
+      org.opencontainers.image.licenses="GPL-2.0-or-later AND LGPL-2.1-or-later AND AGPL-3.0-only AND MIT AND LicenseRef-Intel-ISSL"
 
 # Switch to non-root user
 USER bio
