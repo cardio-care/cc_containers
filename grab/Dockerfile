@@ -1,9 +1,9 @@
-FROM rocker/tidyverse:4.6.0
+FROM rocker/r-rver:4.6.1
 
-LABEL version="1.0.0"
+LABEL version="2.0.0"
 
 # Install system dependencies and create non-root user
-RUN apt-get update && apt-get upgrade -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     unzip \
     && apt-get clean \
@@ -29,6 +29,9 @@ RUN touch /etc/passwd /etc/group \
 # Install R packages
 RUN Rscript -e "\
     pak::pkg_install(c( \
+        'dplyr@1.2.1', \
+        'DBI@1.3.0', \
+        'RSQLite@3.53.3', \
         'mvtnorm@1.4-1', \
         'lme4@2.0-1', \
         'ordinal@2025.12-29', \
@@ -46,6 +49,11 @@ RUN Rscript -e "\
 RUN apt-get purge -y linux-libc-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+COPY cct_allow_na.R /
+
+LABEL org.opencontainers.image.description="Contains third-party software under multiple licenses; for full software license info see the associated SBOM and /usr/share/licenses/" \
+      org.opencontainers.image.licenses="GPL-2.0-or-later,Intel-ISSL"
 
 # Switch to non-root user
 USER bio
