@@ -4,6 +4,7 @@ LABEL version="2.0.0"
 
 # Install system dependencies and create non-root user
 RUN apt-get update \
+    && apt-get install -y --no-install-recommends wget \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 RUN install2.r --error pak
