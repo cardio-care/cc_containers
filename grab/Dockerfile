@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN install2.r --error pak
 
 WORKDIR /tmp
-RUN wget --progress=dot:giga  --user-agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/120 Safari/537.36" \
+RUN wget --progress=dot:giga  --user-agent="Mozilla/5.0" \
         https://yanglab.westlake.edu.cn/software/gcta/bin/gcta-1.95.4-linux-x86_64.zip -O /tmp/gcta.zip \
     && unzip -q /tmp/gcta.zip -d /tmp/gcta_extracted \
     && cp /tmp/gcta_extracted/gcta-1.95.4-linux-x86_64/gcta64 /tmp/gcta.AppImage \
