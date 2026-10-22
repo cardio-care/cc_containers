@@ -36,10 +36,6 @@ RUN  install2.r --error pak \
     pak::cache_delete()" \
     && rm -rf /tmp/downloaded_packages
 
-RUN apt-get purge -y linux-libc-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
 LABEL org.opencontainers.image.description="Contains third-party software under multiple licenses; for full software license info see the SBOM attached to the release of the same tag and /usr/share/licenses/" \
       org.opencontainers.image.licenses="GPL-2.0-or-later"
 
