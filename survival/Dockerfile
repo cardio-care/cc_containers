@@ -6,15 +6,14 @@ LABEL version="1.0.0"
 # Set the working directory
 WORKDIR /app
 
-RUN install2.r --error pak
-
 # Create non-root user
 RUN touch /etc/passwd /etc/group \
     && groupadd -r bio --gid 1001 \
     && useradd -r -g bio -m --uid 1001 bio
 
 # Install dependencies
-RUN Rscript -e "\
+RUN  install2.r --error pak \
+    && Rscript -e "\
     pak::pkg_install(c( \
         'seqminer@9.9', \
         'survival@3.8-12', \
@@ -34,7 +33,8 @@ RUN Rscript -e "\
         'optparse@1.7.5', \
         'RhpcBLASctl@0.23-42' \
     )); \
-    pak::cache_delete()" 
+    pak::cache_delete()" \
+    && rm -rf /tmp/downloaded_packages
 
 RUN apt-get purge -y linux-libc-dev \
     && apt-get clean \
