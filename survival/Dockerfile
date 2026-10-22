@@ -13,10 +13,10 @@ RUN apt-get update && apt-get install -y \
         curl \
         libnng-dev \
         cmake \
-        libmbedtls-dev
+        libmbedtls-dev \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-RUN install2.r --error pak
+    && rm -rf /var/lib/apt/lists/* \
+    && install2.r --error pak
 
 # Create non-root user
 RUN touch /etc/passwd /etc/group \
