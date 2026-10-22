@@ -6,14 +6,7 @@ LABEL version="1.0.0"
 # Set the working directory
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-        libcurl4-openssl-dev \
-        libssl-dev \
-        libxml2-dev \
-        curl \
-        libnng-dev \
-        cmake \
-        libmbedtls-dev \
+RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && install2.r --error pak
