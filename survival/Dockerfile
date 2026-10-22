@@ -26,7 +26,7 @@ RUN touch /etc/passwd /etc/group \
 # Install dependencies
 RUN Rscript -e "\
     pak::pkg_install(c( \
-        'seqminer@9.7', \
+        'seqminer@9.9', \
         'survival@3.8-12', \
         'dplyr@1.2.1', \
         'data.table@1.18.6.1', \
