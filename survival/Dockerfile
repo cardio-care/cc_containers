@@ -6,10 +6,7 @@ LABEL version="1.0.0"
 # Set the working directory
 WORKDIR /app
 
-RUN apt-get update \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && install2.r --error pak
+RUN install2.r --error pak
 
 # Create non-root user
 RUN touch /etc/passwd /etc/group \
