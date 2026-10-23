@@ -51,7 +51,8 @@ RUN Rscript -e "\
         'DescTools@0.99.60', \
         'optparse@1.8.2' \
     )); \
-    pak::cache_delete()" 
+    pak::cache_delete()" \
+    && rm -rf /usr/local/lib/R/site-library/openssl/doc/keys.html # trivy false positive
 
 RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/*
