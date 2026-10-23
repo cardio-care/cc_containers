@@ -15,11 +15,10 @@ RUN touch /etc/passwd /etc/group \
     && useradd -r -g bio -m --uid 1001 bio
 
 # Install quarto
-RUN wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.10.19/quarto-1.10.19-linux-amd64.tar.gz \
-    && mkdir ~/opt \
-    && tar -C ~/opt -xvzf quarto-*-linux-amd64.tar.gz \
-    && mkdir ~/.local/bin \
-    && ln -s ~/opt/quarto-*/bin/quarto ~/.local/bin/quarto
+RUN wget -q https://github.com/quarto-dev/quarto-cli/releases/download/v1.10.19/quarto-1.10.19-linux-amd64.tar.gz \
+    && tar -C /opt -xzf quarto-1.10.19-linux-amd64.tar.gz \
+    && ln -s /opt/quarto-1.10.19/bin/quarto /usr/local/bin/quarto \
+    && rm quarto-1.10.19-linux-amd64.tar.gz
 
 # Install R dependencies
 RUN Rscript -e "\
