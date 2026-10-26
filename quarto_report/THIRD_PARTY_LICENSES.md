@@ -10,7 +10,7 @@ The primary software and packages are listed below:
 
 | Project  | Project URL | License Type |
 | ------------- | ------------- | ------------- |
-| rocker/r-ver | https://hub.docker.com/r/rocker/r-ver | GPL-2 |
+| rocker/r-ver | https://hub.docker.com/r/rocker/r-ver | GPL (≥ 2)  |
 | R | https://www.r-project.org | GPL-2/GPL-3 |
 | quarto | https://quarto.org | MIT |
 | fastman | https://github.com/adhikari-statgen-lab/fastman | GPL-3 |
