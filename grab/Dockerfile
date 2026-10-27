@@ -1,19 +1,19 @@
-FROM rocker/tidyverse:4.6.0
+FROM rocker/r-ver:4.6.1
 
-LABEL version="1.0.0"
+LABEL version="2.0.0"
 
 # Install system dependencies and create non-root user
-RUN apt-get update && apt-get upgrade -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
-    unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 RUN install2.r --error pak
 
 WORKDIR /tmp
-RUN wget --progress=dot:giga https://yanglab.westlake.edu.cn/software/gcta/bin/gcta-1.95.2-linux-x86_64.zip -O /tmp/gcta.zip \
+RUN wget --progress=dot:giga  --user-agent="Mozilla/5.0" \
+        https://yanglab.westlake.edu.cn/software/gcta/bin/gcta-1.95.4-linux-x86_64.zip -O /tmp/gcta.zip \
     && unzip -q /tmp/gcta.zip -d /tmp/gcta_extracted \
-    && cp /tmp/gcta_extracted/gcta-1.95.2-linux-x86_64/gcta /tmp/gcta.AppImage \
+    && cp /tmp/gcta_extracted/gcta-1.95.4-linux-x86_64/gcta64 /tmp/gcta.AppImage \
     && chmod +x /tmp/gcta.AppImage \
     && /tmp/gcta.AppImage --appimage-extract \
     && mv /tmp/squashfs-root /opt/gcta \
@@ -29,6 +29,9 @@ RUN touch /etc/passwd /etc/group \
 # Install R packages
 RUN Rscript -e "\
     pak::pkg_install(c( \
+        'dplyr@1.2.1', \
+        'DBI@1.3.0', \
+        'RSQLite@3.53.3', \
         'mvtnorm@1.4-1', \
         'lme4@2.0-1', \
         'ordinal@2025.12-29', \
@@ -46,6 +49,13 @@ RUN Rscript -e "\
 RUN apt-get purge -y linux-libc-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir /opt/grab
+COPY bin/cct_allow_na.R /opt/grab/
+COPY bin/LICENSE-Intel-ISSL /usr/share/common-licenses/
+
+LABEL org.opencontainers.image.description="Contains third-party software under multiple licenses; for full software license info see the SBOM attached to the release of the same tag and /usr/share/licenses/" \
+      org.opencontainers.image.licenses="GPL-2.0-or-later AND LicenseRef-Intel-ISSL"
 
 # Switch to non-root user
 USER bio
