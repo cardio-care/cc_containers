@@ -2,19 +2,14 @@ FROM rocker/r-ver:4.6.1
 
 LABEL version="2.0.0"
 
-# Install system dependencies and create non-root user
-RUN apt-get update \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-RUN install2.r --error pak
-
 # Create non-root user
 RUN touch /etc/passwd /etc/group \
     && groupadd -r bio --gid 1001 \
     && useradd -r -g bio -m --uid 1001 bio
 
 # Install R dependencies
-RUN Rscript -e "\
+RUN install2.r --error pak \
+    && Rscript -e "\
     pak::pkg_install(c( \
         'dplyr@1.2.1', \
         'data.table@1.18.6.1', \
