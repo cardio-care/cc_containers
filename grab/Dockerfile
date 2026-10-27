@@ -1,6 +1,6 @@
 FROM rocker/r-ver:4.6.1
 
-LABEL version="2.0.0"
+LABEL version="2.0.1"
 
 # Install system dependencies and create non-root user
 RUN apt-get update && apt-get install -y --no-install-recommends \
