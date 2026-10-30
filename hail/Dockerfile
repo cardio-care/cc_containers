@@ -1,9 +1,11 @@
-FROM python:3.11-slim-bullseye
+FROM hailgenetics/hail:0.2.138-py3.13
 
-LABEL version="0.2.139"
+LABEL version="0.2.138"
 
-RUN apt-get update && apt-get install -y --no-install-recommends openjdk-11-jdk g++ python3-pip procps && rm -rf /var/lib/apt/lists/*
-RUN python3.11 -m pip install --no-cache-dir hail==0.2.138
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends build-essential g++ make \
+    && pip install --no-cache-dir gnomad igraph loguru onnx \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd app
 
-RUN useradd app
 USER app
