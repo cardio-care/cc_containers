@@ -29,7 +29,8 @@ For an example with full license documentation see `grab/`
    - A general license notice and a table of primary software components with a link to their website and their license
    - Include the base image, primary software (R, Python), and packages or software that are important to the analysis. 
 4. `licenses/` 
-   - License files for for software with a license that is not already in the base image. Copy the license files into the image in `/usr/share/common-licenses/`
+   - Software with a license type that is not already stored in the base image license list
+   - Copy the license files into the image in `/usr/share/common-licenses/`
 5. `Dockerfile` 
    - Include a license for the released image and description
    ```bash
