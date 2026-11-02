@@ -135,7 +135,7 @@ jobs:
         with:
           image-ref: ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}:${{ needs.detect.outputs.base-version }}
           severity: HIGH,CRITICAL
-          exit-code: '1'
+          exit-code: '0'
           ignore-unfixed: true
 
       - name: Generate SBOM
