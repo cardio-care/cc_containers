@@ -22,11 +22,15 @@ For an example with full license documentation see `grab/`
 ### Files and folders to include for each image
 1. `LICENSE` 
    - Each folder contains a license which covers the Dockerfile and any custom scripts
+   - Dockerfiles are recipes and do not need to cover the software in the container image so can be MIT
+   - Custom scripts written by you can also be MIT
+   - If you have modified code from an external source in `patches/` then use this to describe the license of the different parts of the repo instead
 2. `patches/` 
-   - Scripts modified from a GPL or similar license 
-   - Include the original copyright lines, a description of the changes, and a new copyright line
+   - Scripts modified from a GPL or similar free software license 
+   - Include the original copyright lines that were in the script, a description of the changes, and a new copyright line at the top of the script (keep the same license type and mention Cardio-CARE + year)
+   - Include all licenses used in `licenses/`. In `LICENSE` write a description of which license applies to what parts of the repo 
 3. `THIRD_PARTY_LICENSES.md` 
-   - A general license notice and a table of primary software components with a link to their website and their license
+   - A general license notice and a table of primary software components that will be installed in the container image with a link to their website and their license
    - Include the base image, primary software (R, Python), and packages or software that are important to the analysis. 
 4. `licenses/` 
    - Software with a license type that is not already stored in the base image license list
