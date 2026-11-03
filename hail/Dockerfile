@@ -8,4 +8,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && useradd app
 
+LABEL org.opencontainers.image.description="Contains third-party software under multiple licenses; for full software license info see the SBOM attached to the release of the same tag and /usr/share/licenses/" \
+    org.opencontainers.image.licenses="MIT"
+
 USER app
