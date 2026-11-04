@@ -37,6 +37,7 @@ For an example with full license documentation see `grab/`
    - Copy the license files into the image in `/usr/share/common-licenses/`
 5. `Dockerfile` 
    - Include a license for the released image and description
+   - Because the base image contains GPL and other copyleft software, the relevant license will generally be `GPL-2.0-or-later`
    ```bash
    LABEL org.opencontainers.image.description="Contains third-party software under multiple licenses; for full software license info see the SBOM attached to the release of the same tag and /usr/share/licenses/" \
     org.opencontainers.image.licenses="GPL-2.0-or-later"
