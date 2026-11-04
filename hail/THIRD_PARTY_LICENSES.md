@@ -17,4 +17,8 @@ The primary software and packages are listed below:
 | igraph | https://python.igraph.org | GPL-3 (PyPI wheel includes GLPK under GPL-3) |
 | loguru | https://github.com/Delgan/loguru | MIT |
 | onnx | https://onnx.ai | Apache-2.0 |
+| typer | https://github.com/fastapi/typer | MIT |
+| typing_extensions | https://github.com/python/typing_extensions | PSF-2.0 |
+| pgenlib | https://github.com/chrchang/plink-ng | LGPL-3.0 |
+| cyvcf2 | https://github.com/brentp/cyvcf2 | MIT (PyPI wheel statically bundles htslib under MIT/Expat) |
 | build-essential (apt) | https://www.debian.org | GPL-2/GPL-3 |

@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.2.138] -  2026-11-04
+
+### Addded
+
+- Add cyvcf2, typer, typing_extensions and pgenlib Python modules
+
 ## [0.2.138] - 2026-10-30
 
 ### Changed
