@@ -1,6 +1,6 @@
 FROM hailgenetics/hail:0.2.138-py3.13
 
-LABEL version="0.2.139"
+LABEL version="0.2.138"
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends build-essential g++ make \
