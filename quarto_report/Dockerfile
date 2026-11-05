@@ -1,6 +1,6 @@
 FROM rocker/r-ver:4.6.1
 
-LABEL version="2.0.0"
+LABEL version="2.1.0"
 
 # Install system dependencies and create non-root user
 RUN apt-get update \
@@ -46,6 +46,7 @@ RUN Rscript -e "\
         'bioc::snpStats', \
         'bioc::SeqArray', \
         'bioc::SNPRelate', \
+        'bioc::SeqVarTools', \
         'adhikari-statgen-lab/fastman', \
         'seqminer@9.9', \
         'DescTools@0.99.60', \
