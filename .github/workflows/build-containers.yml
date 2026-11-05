@@ -21,6 +21,8 @@ jobs:
     outputs:
       folder: ${{ steps.changed-folder.outputs.folder }}
       base-version: ${{ steps.version.outputs.base-version }}
+      description: ${{ steps.version.outputs.description }}
+      licenses: ${{ steps.version.outputs.licenses }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -68,17 +70,35 @@ jobs:
             fi
           done
 
-      - name: Extract version from Dockerfile
+      - name: Extract version and OCI labels from Dockerfile
         id: version
         if: steps.changed-folder.outputs.folder != ''
+        env:
+          DOCKERFILE: ./${{ steps.changed-folder.outputs.folder }}/Dockerfile
         run: |
-          BASE_VERSION=$(grep 'LABEL version=' ./${{ steps.changed-folder.outputs.folder }}/Dockerfile \
+          BASE_VERSION=$(grep 'LABEL version=' "$DOCKERFILE" \
             | sed 's/.*LABEL version="\([^"]*\)".*/\1/')
           if [ -z "$BASE_VERSION" ]; then
             echo "ERROR: Could not extract version from LABEL version=\"...\" in Dockerfile. Ensure the label exists and uses double quotes."
             exit 1
           fi
           echo "base-version=${BASE_VERSION}" >> $GITHUB_OUTPUT
+
+          DESCRIPTION=$(grep 'org.opencontainers.image.description=' "$DOCKERFILE" \
+            | head -n1 | sed 's/.*org.opencontainers.image.description="\([^"]*\)".*/\1/')
+          if [ -z "$DESCRIPTION" ]; then
+            echo "ERROR: Missing LABEL org.opencontainers.image.description=\"...\" in Dockerfile (required for the GHCR package page)."
+            exit 1
+          fi
+          echo "description=${DESCRIPTION}" >> $GITHUB_OUTPUT
+
+          LICENSES=$(grep 'org.opencontainers.image.licenses=' "$DOCKERFILE" \
+            | head -n1 | sed 's/.*org.opencontainers.image.licenses="\([^"]*\)".*/\1/')
+          if [ -z "$LICENSES" ]; then
+            echo "ERROR: Missing LABEL org.opencontainers.image.licenses=\"...\" in Dockerfile (required for the GHCR package page)."
+            exit 1
+          fi
+          echo "licenses=${LICENSES}" >> $GITHUB_OUTPUT
 
   build:
     runs-on: ubuntu-latest
@@ -197,6 +217,15 @@ jobs:
           tags: |
             ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}:${{ needs.detect.outputs.base-version }}
             ghcr.io/cardio-care/${{ needs.detect.outputs.folder }}:latest
+          # GHCR's package page reads its description from annotations on the
+          # manifest the tag points to. buildx pushes an OCI index (image +
+          # attestation), so the Dockerfile LABELs (image-config only) are
+          # invisible there; mirror them onto the index. 'index:' targets the
+          # image index instead of each per-platform manifest.
+          annotations: |
+            index:org.opencontainers.image.version=${{ needs.detect.outputs.base-version }}
+            index:org.opencontainers.image.description=${{ needs.detect.outputs.description }}
+            index:org.opencontainers.image.licenses=${{ needs.detect.outputs.licenses }}
 
       - name: Sign image with Cosign
         uses: sigstore/cosign-installer@v4.1.2
