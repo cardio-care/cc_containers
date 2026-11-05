@@ -12,3 +12,4 @@ This repository contains Docker containers for various bioinformatics and data s
 -   The CI workflow automatically builds and publishes Docker images to GHCR
 -   Images are tagged with both a timestamped version (for development/working versions) and `latest` (for the most recent release)
 -   The base version (without timestamp) represents official releases
+-   Dockerfile labels org.opencontainers.image.description and org.opencontainers.image.licenses are necessary
