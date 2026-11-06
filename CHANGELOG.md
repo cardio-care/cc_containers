@@ -1,6 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 2026-10-27
+
+## Added
+
+## Changed
+
+- CI split SBOM into different steps in case of failure
+
+## Fixed
+
 ## 2026-06-30
 
 ## Added
