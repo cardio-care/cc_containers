@@ -1,6 +1,6 @@
 FROM python:3.12-slim
 
-LABEL version="4.1.6"
+LABEL version="4.1.6-1"
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
@@ -18,3 +18,4 @@ WORKDIR /app
 # Set ownership and switch to non-root user
 RUN chown -R appuser:appuser /app
 USER appuser
+
