@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.2.140] - 2025-11-16
+
+### Changed
+
+-   Use HAIL 0.2.140 as base container
+
 ## [0.2.138-1] -  2026-11-04
 
 ### Addded
